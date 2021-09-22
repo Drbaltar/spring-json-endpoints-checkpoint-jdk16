@@ -25,8 +25,8 @@ public class ConversionController {
 
     @PostMapping("/activities/mailing-list")
     @JsonView(ActivityViews.MailingList.class)
-    public List<ActivityRecord.Activity> generateMailingListFromJSON(@RequestBody ActivityRecord.Activities inputActivityList) {
-        return inputActivityList.activities();
+    public List<ActivityRecord.User> generateMailingListFromJSON(@RequestBody ActivityRecord.Activities inputActivityList) {
+        return inputActivityList.getMailingListFromUsers();
     }
 
 }

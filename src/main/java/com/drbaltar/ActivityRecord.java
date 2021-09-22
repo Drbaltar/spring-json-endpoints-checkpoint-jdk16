@@ -9,6 +9,12 @@ import java.util.List;
 
 public class ActivityRecord {
     public static record Activities(ArrayList<Activity> activities) {
+        public List<User> getMailingListFromUsers() {
+            ArrayList<User> users = new ArrayList<>();
+            for (Activity activity : activities)
+                users.add(activity.user());
+            return users;
+        }
     }
 
     public record Activity(User user, Status status) {
@@ -45,25 +51,17 @@ public class ActivityRecord {
         public String getActivityStatus() {
             return status.text();
         }
+    }
 
-        @JsonView(ActivityViews.MailingList.class)
-        @JsonProperty("username")
-        public String getUserName() {
-            return user.username();
-        }
-
+    public record User(int id, @JsonView(ActivityViews.MailingList.class) String username, ArrayList<Email> emails) {
         @JsonView(ActivityViews.MailingList.class)
         @JsonProperty("addresses")
         public List<String> getEmailAddressList() {
             ArrayList<String> emailList = new ArrayList<>();
-            for (Email email : user.emails()) {
+            for (Email email : emails())
                 emailList.add(email.address());
-            }
             return emailList;
         }
-    }
-
-    public record User(int id, String username, ArrayList<Email> emails) {
     }
 
     public record Status(String text, String date) {
